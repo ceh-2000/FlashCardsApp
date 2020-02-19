@@ -15,6 +15,7 @@
 		ADAD61D723F86D3300958E92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADAD61D523F86D3300958E92 /* LaunchScreen.storyboard */; };
 		ADAD61E223F86D3400958E92 /* FlashCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAD61E123F86D3400958E92 /* FlashCardsTests.swift */; };
 		ADAD61ED23F86D3400958E92 /* FlashCardsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAD61EC23F86D3400958E92 /* FlashCardsUITests.swift */; };
+		ADB00BAD23FCFD2700A57C25 /* CreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB00BAC23FCFD2700A57C25 /* CreationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		ADAD61E823F86D3400958E92 /* FlashCardsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashCardsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADAD61EC23F86D3400958E92 /* FlashCardsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashCardsUITests.swift; sourceTree = "<group>"; };
 		ADAD61EE23F86D3400958E92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ADB00BAC23FCFD2700A57C25 /* CreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				ADAD61CC23F86D2F00958E92 /* SceneDelegate.swift */,
 				ADAD61CE23F86D2F00958E92 /* ViewController.swift */,
 				ADAD61D023F86D2F00958E92 /* Main.storyboard */,
+				ADB00BAC23FCFD2700A57C25 /* CreationViewController.swift */,
 				ADAD61D323F86D3300958E92 /* Assets.xcassets */,
 				ADAD61D523F86D3300958E92 /* LaunchScreen.storyboard */,
 				ADAD61D823F86D3300958E92 /* Info.plist */,
@@ -262,6 +265,7 @@
 				ADAD61CF23F86D2F00958E92 /* ViewController.swift in Sources */,
 				ADAD61CB23F86D2F00958E92 /* AppDelegate.swift in Sources */,
 				ADAD61CD23F86D2F00958E92 /* SceneDelegate.swift in Sources */,
+				ADB00BAD23FCFD2700A57C25 /* CreationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +439,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JK36N2X29V;
 				INFOPLIST_FILE = FlashCards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -452,6 +457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JK36N2X29V;
 				INFOPLIST_FILE = FlashCards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
