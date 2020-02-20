@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var plusBtn: UIButton!
     var number = 1
+    var option1TEXT = "Strawberry Milk"
+    var option2TEXT = "1% Milk"
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,11 +57,19 @@ class ViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                    let navigationController = segue.destination as! UINavigationController
+        let navigationController = segue.destination as! UINavigationController
 
-                    let creationController = navigationController.topViewController as! CreationViewController
+        let creationController = navigationController.topViewController as! CreationViewController
+        
+        creationController.flashcardsController = self
 
-                    creationController.flashcardsController = self
+        if segue.identifier == "EditSegue"{
+            creationController.initialQuestion = frontLabel.text
+            creationController.initialAnswer = backLabel.text
+            creationController.initialOpt1 = option1TEXT
+            creationController.initialOpt2 = option2TEXT
+        }
+                    
 
     }
 
@@ -90,6 +101,9 @@ class ViewController: UIViewController {
         
         frontLabel.text = question
         backLabel.text = answer
+        option1TEXT = o1
+        option2TEXT = op2
+        
         number = Int.random(in: 0 ..< 3)
         if(number == 0){
             btnOption1.setTitle(answer, for: .normal)
