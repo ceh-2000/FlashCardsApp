@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         //plus button
         plusBtn.layer.borderWidth = 3.0
         plusBtn.layer.borderColor = #colorLiteral(red: 0.3518381119, green: 0.8115496039, blue: 1, alpha: 1)
-        plusBtn.layer.cornerRadius = 20.0
+        plusBtn.layer.cornerRadius = 25.0
         plusBtn.clipsToBounds = true
         
     }
