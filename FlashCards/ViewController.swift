@@ -8,6 +8,13 @@
 
 import UIKit
 
+struct Flashcard{
+    var question: String
+    var answer: String
+    var options = [String]()
+    
+}
+
 class ViewController: UIViewController {
     @IBOutlet weak var backLabel: UILabel!
     @IBOutlet weak var frontLabel: UILabel!
@@ -22,6 +29,15 @@ class ViewController: UIViewController {
     var option1TEXT = "Strawberry Milk"
     var option2TEXT = "1% Milk"
 
+    //Array to hold our flashcards
+    var flashcards = [Flashcard]()
+    
+    //next and previous buttons
+    @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
+    
+    //Current flashcard index
+    var currentIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +69,19 @@ class ViewController: UIViewController {
         plusBtn.layer.borderColor = #colorLiteral(red: 0.3518381119, green: 0.8115496039, blue: 1, alpha: 1)
         plusBtn.layer.cornerRadius = 25.0
         plusBtn.clipsToBounds = true
+        
+        //Read saved flashcards
+        readSavedFlashcards()
+        
+        //set the initial question and answer on the flashcard if none saved
+        if flashcards.count == 0{
+            updateFlashcard(question: "What kind of milk is the best?", answer: "2% Milk", o1: "Strawberry Milk", op2: "1% Milk")
+        }
+        else{
+            updateLabels()
+            updateNextPrevButtons()
+        }
+        
         
     }
     
@@ -98,11 +127,19 @@ class ViewController: UIViewController {
     }
     
     func updateFlashcard(question: String, answer: String, o1: String, op2: String){
+        let flashcard = Flashcard(question: question, answer: answer)
         
-        frontLabel.text = question
-        backLabel.text = answer
+//        frontLabel.text = flashcard.question
+//        backLabel.text = flashcard.answer
         option1TEXT = o1
         option2TEXT = op2
+        
+        flashcards.append(flashcard)
+        print("Added a new flashcard. We new have \(flashcards.count) flashcards.")
+        
+        currentIndex = flashcards.count - 1
+        
+        print("Current index: \(currentIndex)")
         
         number = Int.random(in: 0 ..< 3)
         if(number == 0){
@@ -123,9 +160,99 @@ class ViewController: UIViewController {
             btnOption2.setTitle(op2, for: .normal)
         }
         frontLabel.isHidden = false
+        
+        //Update next and previous buttons
+        updateNextPrevButtons()
+        
+        //Update labels
+        updateLabels()
+        
+        saveAllFlashcardsToDisk()
 
     }
     
     
+    
+    
+    @IBAction func didTapOnPrev(_ sender: Any) {
+        //decrease current index
+        currentIndex = currentIndex - 1
+        
+        //update labels
+        updateLabels()
+        
+        //update buttons
+        updateNextPrevButtons()
+    }
+    
+    
+    @IBAction func didTapOnNext(_ sender: Any) {
+        //increase current index
+        currentIndex = currentIndex + 1
+        
+        //update labels
+        updateLabels()
+        
+        //update buttons
+        updateNextPrevButtons()
+    }
+    
+    func updateLabels(){
+        //get current flashcard
+        let currentFlashcard = flashcards[currentIndex]
+        
+        //Update labels
+        frontLabel.text = currentFlashcard.question
+        backLabel.text = currentFlashcard.answer
+        
+        //ADD STUFF HERE TO SUPPORT MULTIPLE OPTIONS
+    }
+    
+    func updateNextPrevButtons(){
+        
+        //disable next button if at end
+        if currentIndex == flashcards.count-1{
+            nextButton.isEnabled = false
+        }
+        else{
+            nextButton.isEnabled = true
+        }
+        
+        //disable previous button if at beginning
+        if currentIndex == 0{
+            prevButton.isEnabled = false
+        }
+        else{
+            prevButton.isEnabled = true
+        }
+    }
+    
+    func saveAllFlashcardsToDisk(){
+        
+        //can't just save arrays --> must convert to dictionary with mapping
+        let dictionaryArray = flashcards.map { (card) -> [String:String] in
+            return ["question": card.question, "answer":card.answer]
+        }
+        
+        //save to user defaults
+        UserDefaults.standard.set(dictionaryArray, forKey: "myFlashCards")
+        
+        //Log success
+        print("Flashcards were saved! Yay!")
+    }
+    
+    func readSavedFlashcards(){
+        
+        //Read dictionary array from disk (if any)
+        if let dictionaryArray = UserDefaults.standard.array(forKey: "myFlashCards") as? [[String: String]] {
+             
+            //in here we know for sure we have a dictionary array
+            let savedCards = dictionaryArray.map {dictionary -> Flashcard in return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!)
+            }
+            
+            //put all the cards in our flashcards array
+            flashcards.append(contentsOf: savedCards)
+        }
+    }
 }
 

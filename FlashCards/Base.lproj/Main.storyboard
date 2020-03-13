@@ -94,6 +94,34 @@
                                     <segue destination="xfQ-pe-Zk0" kind="presentation" id="FP9-rE-vrm"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nn-sS-qcB">
+                                <rect key="frame" x="22" y="577" width="48" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Prev">
+                                    <color key="titleColor" red="0.47808789550000003" green="0.80138065820000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapOnPrev:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qzx-R8-YHq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="79H-S7-Yfs">
+                                <rect key="frame" x="301" y="577" width="51" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" red="0.47808789550000003" green="0.80138065820000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapOnNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Zb-rD-hgo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
@@ -109,7 +137,9 @@
                         <outlet property="btnOption3" destination="AA7-c8-esQ" id="sQP-PA-pJI"/>
                         <outlet property="card" destination="NWG-g2-JII" id="r0f-pH-2R6"/>
                         <outlet property="frontLabel" destination="k2d-Sl-Jm6" id="Uq2-ea-M9R"/>
+                        <outlet property="nextButton" destination="79H-S7-Yfs" id="1AH-5v-kfR"/>
                         <outlet property="plusBtn" destination="v0a-Ty-eZ3" id="pkn-w6-o8E"/>
+                        <outlet property="prevButton" destination="6Nn-sS-qcB" id="vpk-x9-UHo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
