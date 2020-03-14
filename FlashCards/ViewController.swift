@@ -11,7 +11,8 @@ import UIKit
 struct Flashcard{
     var question: String
     var answer: String
-    var options = [String]()
+    var option1: String
+    var option2: String
     
 }
 
@@ -28,6 +29,7 @@ class ViewController: UIViewController {
     var number = 1
     var option1TEXT = "Strawberry Milk"
     var option2TEXT = "1% Milk"
+    var answerText = "Hello"
 
     //Array to hold our flashcards
     var flashcards = [Flashcard]()
@@ -75,7 +77,7 @@ class ViewController: UIViewController {
         
         //set the initial question and answer on the flashcard if none saved
         if flashcards.count == 0{
-            updateFlashcard(question: "What kind of milk is the best?", answer: "2% Milk", o1: "Strawberry Milk", op2: "1% Milk")
+            updateFlashcard(question: "What kind of milk is the best?", answer: "2% Milk", o1: "Strawberry Milk", op2: "1% Milk", isExisting: false)
         }
         else{
             updateLabels()
@@ -126,20 +128,30 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateFlashcard(question: String, answer: String, o1: String, op2: String){
-        let flashcard = Flashcard(question: question, answer: answer)
+    func updateFlashcard(question: String, answer: String, o1: String, op2: String, isExisting: Bool){
+        let flashcard = Flashcard(question: question, answer: answer, option1: o1, option2: op2)
         
 //        frontLabel.text = flashcard.question
 //        backLabel.text = flashcard.answer
-        option1TEXT = o1
-        option2TEXT = op2
+        option1TEXT = flashcard.option1
+        option2TEXT = flashcard.option2
         
-        flashcards.append(flashcard)
-        print("Added a new flashcard. We new have \(flashcards.count) flashcards.")
+        if isExisting {
+            
+            //replace existing flashcard
+            flashcards[currentIndex] = flashcard
+            
+        }
+        else{
+            flashcards.append(flashcard)
+            print("Added a new flashcard. We new have \(flashcards.count) flashcards.")
+            
+            currentIndex = flashcards.count - 1
+            
+            print("Current index: \(currentIndex)")
+        }
         
-        currentIndex = flashcards.count - 1
-        
-        print("Current index: \(currentIndex)")
+
         
         number = Int.random(in: 0 ..< 3)
         if(number == 0){
@@ -206,6 +218,30 @@ class ViewController: UIViewController {
         backLabel.text = currentFlashcard.answer
         
         //ADD STUFF HERE TO SUPPORT MULTIPLE OPTIONS
+        option1TEXT = currentFlashcard.option1
+        option2TEXT = currentFlashcard.option2
+        answerText = currentFlashcard.answer
+        
+        number = Int.random(in: 0 ..< 3)
+        if(number == 0){
+            btnOption1.setTitle(answerText, for: .normal)
+            btnOption2.setTitle(option1TEXT, for: .normal)
+            btnOption3.setTitle(option2TEXT, for: .normal)
+
+        }
+        
+        else if(number == 1){
+            btnOption2.setTitle(answerText, for: .normal)
+            btnOption3.setTitle(option1TEXT, for: .normal)
+            btnOption1.setTitle(option2TEXT, for: .normal)
+        }
+        else{
+            btnOption3.setTitle(answerText, for: .normal)
+            btnOption1.setTitle(option1TEXT, for: .normal)
+            btnOption2.setTitle(option2TEXT, for: .normal)
+        }
+        frontLabel.isHidden = false
+
     }
     
     func updateNextPrevButtons(){
@@ -231,11 +267,11 @@ class ViewController: UIViewController {
         
         //can't just save arrays --> must convert to dictionary with mapping
         let dictionaryArray = flashcards.map { (card) -> [String:String] in
-            return ["question": card.question, "answer":card.answer]
+            return ["question": card.question, "answer":card.answer, "option1":card.option1, "option2":card.option2]
         }
         
         //save to user defaults
-        UserDefaults.standard.set(dictionaryArray, forKey: "myFlashCards")
+        UserDefaults.standard.set(dictionaryArray, forKey: "theFlashCards")
         
         //Log success
         print("Flashcards were saved! Yay!")
@@ -244,15 +280,61 @@ class ViewController: UIViewController {
     func readSavedFlashcards(){
         
         //Read dictionary array from disk (if any)
-        if let dictionaryArray = UserDefaults.standard.array(forKey: "myFlashCards") as? [[String: String]] {
+        if let dictionaryArray = UserDefaults.standard.array(forKey: "theFlashCards") as? [[String: String]] {
              
             //in here we know for sure we have a dictionary array
-            let savedCards = dictionaryArray.map {dictionary -> Flashcard in return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!)
+            let savedCards = dictionaryArray.map {dictionary -> Flashcard in return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!, option1: dictionary["option1"]!, option2: dictionary["option2"]!)
             }
             
             //put all the cards in our flashcards array
             flashcards.append(contentsOf: savedCards)
         }
+    }
+    
+    
+    @IBAction func didTapOnDelete(_ sender: Any) {
+    
+        //show confirmation
+        let alert = UIAlertController(title: "Delete flashcard", message: "Are you sure you want to delete it?", preferredStyle: .actionSheet)
+        
+              
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            self.deleteCurrentFlashcard()
+        })
+        
+        //remember to add the new action to the parent action
+        alert.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+
+    }
+    
+    func deleteCurrentFlashcard(){
+        //Delete current flashcard
+        
+        if (currentIndex == -1 && flashcards.count==1){
+            currentIndex = 0
+        }
+        else{
+            
+            flashcards.remove(at: currentIndex)
+
+            //Special case to check if last card was deleted
+            if currentIndex > flashcards.count - 1 {
+                currentIndex = flashcards.count - 1
+            }
+            
+            updateNextPrevButtons()
+            
+            updateLabels()
+            
+            saveAllFlashcardsToDisk()
+        }
+
     }
 }
 
