@@ -99,7 +99,7 @@ class ViewController: UIViewController {
         btnOption1.alpha = 0.0
         btnOption1.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
         
-        //animation
+        //animation 
         UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
                 self.btnOption1.alpha = 1.0
                 self.btnOption1.transform = CGAffineTransform.identity
