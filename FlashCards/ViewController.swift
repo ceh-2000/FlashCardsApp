@@ -65,12 +65,6 @@ class ViewController: UIViewController {
         btnOption2.clipsToBounds = true
         btnOption3.layer.cornerRadius = 20.0
         btnOption3.clipsToBounds = true
-
-        //plus button
-        plusBtn.layer.borderWidth = 3.0
-        plusBtn.layer.borderColor = #colorLiteral(red: 0.3518381119, green: 0.8115496039, blue: 1, alpha: 1)
-        plusBtn.layer.cornerRadius = 25.0
-        plusBtn.clipsToBounds = true
         
         //Read saved flashcards
         readSavedFlashcards()
@@ -83,6 +77,56 @@ class ViewController: UIViewController {
             updateLabels()
             updateNextPrevButtons()
         }
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //first start with the flashcard invisible and slightly smaller in size
+        card.alpha = 0.0
+        card.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
+        
+        //animation
+        UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+                self.card.alpha = 1.0
+                self.card.transform = CGAffineTransform.identity
+        
+        })
+        
+        //first start with the button 1 invisible and slightly smaller in size
+        btnOption1.alpha = 0.0
+        btnOption1.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
+        
+        //animation
+        UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+                self.btnOption1.alpha = 1.0
+                self.btnOption1.transform = CGAffineTransform.identity
+        
+        })
+        
+        //first start with the button 2 invisible and slightly smaller in size
+        btnOption2.alpha = 0.0
+        btnOption2.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
+        
+        //animation
+        UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+                self.btnOption2.alpha = 1.0
+                self.btnOption2.transform = CGAffineTransform.identity
+        
+        })
+        
+        //first start with the button 2 invisible and slightly smaller in size
+        btnOption3.alpha = 0.0
+        btnOption3.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
+        
+        //animation
+        UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+                self.btnOption3.alpha = 1.0
+                self.btnOption3.transform = CGAffineTransform.identity
+        
+        })
         
         
     }
@@ -106,26 +150,39 @@ class ViewController: UIViewController {
 
     @IBAction func didTapOption1(_ sender: Any) {
         if(number == 0){
-            frontLabel.isHidden = true
+            flipFlashcard()
         }
     }
     
     @IBAction func didTapOption2(_ sender: Any) {
         if(number == 1){
-            frontLabel.isHidden = true
+            flipFlashcard()
         }
     }
     
     @IBAction func didTapOption3(_ sender: Any) {
         if(number == 2){
-            frontLabel.isHidden = true
+            flipFlashcard()
         }
     }
     
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         if(frontLabel.isHidden == true){
-            frontLabel.isHidden = false
+            flipFlashcard()
         }
+    }
+    
+    func flipFlashcard(){
+        UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight, animations: {
+            if(self.frontLabel.isHidden == true){
+                self.frontLabel.isHidden = false
+            }
+            else{
+                self.frontLabel.isHidden = true
+            }
+        })
+        
+        
     }
     
     func updateFlashcard(question: String, answer: String, o1: String, op2: String, isExisting: Bool){
@@ -190,11 +247,11 @@ class ViewController: UIViewController {
         //decrease current index
         currentIndex = currentIndex - 1
         
-        //update labels
-        updateLabels()
-        
         //update buttons
         updateNextPrevButtons()
+        
+        //animate switching cards
+        animateCardOutPrev()
     }
     
     
@@ -202,11 +259,11 @@ class ViewController: UIViewController {
         //increase current index
         currentIndex = currentIndex + 1
         
-        //update labels
-        updateLabels()
-        
         //update buttons
         updateNextPrevButtons()
+        
+        //animate switching cards
+        animateCardOutNext()
     }
     
     func updateLabels(){
@@ -336,5 +393,52 @@ class ViewController: UIViewController {
         }
 
     }
+    
+    func animateCardOutNext(){
+        //animate card flying out left
+        UIView.animate(withDuration: 0.2, animations: {
+            self.card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+        }, completion: {finished in
+            //update labels
+            self.updateLabels()
+            
+            //call the other animation
+            self.animateCardInNext()
+        })
+    }
+    
+    func animateCardInNext(){
+        //start card on the right side (don't animate this)
+        card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+        
+        //animate card going back to its original position
+        UIView.animate(withDuration: 0.2, animations: {
+            self.card.transform = CGAffineTransform.identity
+        })
+    }
+    
+    func animateCardOutPrev(){
+        //animate card flying out right
+        UIView.animate(withDuration: 0.2, animations: {
+            self.card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+        }, completion: {finished in
+            //update labels
+            self.updateLabels()
+            
+            //call the other animation
+            self.animateCardInPrev()
+        })
+    }
+    
+    func animateCardInPrev(){
+        //start card on the left side (don't animate this)
+        card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+        
+        //animate card going back to its original position
+        UIView.animate(withDuration: 0.2, animations: {
+            self.card.transform = CGAffineTransform.identity
+        })
+    }
+    
 }
 
